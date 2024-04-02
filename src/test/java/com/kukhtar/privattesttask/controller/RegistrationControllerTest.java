@@ -9,7 +9,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -18,7 +19,7 @@ class RegistrationControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void whenAllFieldsValid_successStatus() throws Exception {
+    void whenAllFieldsValid_thenSuccessStatus() throws Exception {
         String validUserJSONString = "{\"username\" : \"testUser\", \"password\" : \"password\",\"email\" : \"test@mail\"}";
 
         this.mockMvc.perform(post("/v1/registration")
@@ -30,8 +31,6 @@ class RegistrationControllerTest {
 
     @Test
     void whenNotParsableJSON_thenErrorMessage() throws Exception {
-        String emptyRequest = "";
-
         this.mockMvc.perform(post("/v1/registration")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("incorrect body")).andDo(print())
@@ -42,8 +41,6 @@ class RegistrationControllerTest {
 
     @Test
     void whenContentIsEmpty_thenErrorMessage() throws Exception {
-        String emptyRequest = "";
-
         this.mockMvc.perform(post("/v1/registration")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("")).andDo(print())
@@ -85,6 +82,30 @@ class RegistrationControllerTest {
                         .content(invalidUserJSONString)).andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(content().string("Password should be at least 8 characters long, Email is not valid"));
+
+    }
+
+    @Test
+    void whenConfirmationNotValid_thenErrorMessage() throws Exception {
+        String confirmationCodeJSON = "{\"confirmationCode\":\"1\"}";
+
+        this.mockMvc.perform(post("/v1/registration/confirm")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(confirmationCodeJSON)).andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Confirmation code has to consist of 6 characters"));
+
+    }
+
+    @Test
+    void whenConfirmationValid_thenNoValidationError() throws Exception {
+        String confirmationCodeJSON = "{\"confirmationCode\":\"111111\"}";
+
+        this.mockMvc.perform(post("/v1/registration/confirm")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(confirmationCodeJSON)).andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpect(content().string("Confirmation code doesn't match"));
 
     }
 }

@@ -27,4 +27,10 @@ public class GlobalExceptionHandler {
     public String handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
         return "Request body is not valid";
     }
+
+    @ExceptionHandler(IllegalStateException.class)
+    @ResponseStatus(value = HttpStatus.BAD_REQUEST)
+    public String handleIllegalStateException(IllegalStateException ex) {
+        return ex.getMessage();
+    }
 }
