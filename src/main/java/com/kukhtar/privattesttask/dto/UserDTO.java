@@ -17,8 +17,8 @@ public class UserDTO {
     @NotNull(message = "Email can not be null")
     private String email;
 
-    @NotNull(message = "password should not be empty")
-    @Size(min = 8)
+    @NotNull(message = "Password should not be empty")
+    @Size(min = 8, message = "Password should be at least 8 characters long")
     @JsonProperty(value = "password",access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
