@@ -34,10 +34,10 @@ public class RegistrationController {
 
         if (confirmationCodeDTO.getConfirmationCode().equals(cachedConfirmationCode)){
             logger.info("Confirmation code is successfully validated");
-            //todo implement repository
+            UserDTO user = (UserDTO)session.getAttribute(RegistrationService.CURRENT_USER);
+            return registrationService.registerUser(user);
         }else{
             throw new IllegalStateException("Confirmation code doesn't match");
         }
-        return null;
     }
 }

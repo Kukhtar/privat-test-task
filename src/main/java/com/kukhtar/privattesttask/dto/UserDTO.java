@@ -7,7 +7,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 public class UserDTO {
-    @JsonIgnore
+
     private Long id;
 
     @NotNull(message = "Username can not be null")
@@ -22,8 +22,13 @@ public class UserDTO {
     @JsonProperty(value = "password",access = JsonProperty.Access.WRITE_ONLY)
     private String password;
 
-    @JsonIgnore
-    private String hashedPassword;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
 
     public String getUsername() {
         return username;
