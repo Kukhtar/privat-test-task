@@ -1,15 +1,15 @@
 package com.kukhtar.privattesttask.service;
 
-import com.kukhtar.privattesttask.PrivatTestTaskApplication;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.AnnotationConfigApplicationContext;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
+@SpringBootTest
 public class ConfirmationCodeGeneratorTest {
 
-    ApplicationContext applicationContext = new AnnotationConfigApplicationContext(PrivatTestTaskApplication.class);
-    ConfirmationCodeGenerator codeGenerator = applicationContext.getBean(ConfirmationCodeGenerator.class);
+    @Autowired
+    ConfirmationCodeGenerator codeGenerator;
 
     @Test
     public void whenCallingGenerator_thenProduce6digitsNumber(){

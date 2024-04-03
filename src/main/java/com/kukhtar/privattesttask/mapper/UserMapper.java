@@ -2,7 +2,6 @@ package com.kukhtar.privattesttask.mapper;
 
 import com.kukhtar.privattesttask.dto.UserDTO;
 import com.kukhtar.privattesttask.model.User;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 
